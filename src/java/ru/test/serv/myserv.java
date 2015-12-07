@@ -54,8 +54,6 @@ public class myserv extends HttpServlet {
         dataList.add("Четыре");
         dataList.add("5");
         dataList.add("Пять");
-        dataList.add("6");
-        dataList.add("Шесть");
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
