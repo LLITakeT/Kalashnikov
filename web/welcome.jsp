@@ -51,7 +51,7 @@
                                     for (itr=data.iterator(); itr.hasNext(); ) {
                                 %>
                                     <tr>
-                                        <td><a id="alert" href="#" data-toggle="modal" data-target="#myModal"><%=itr.next()%></a></td>
+                                        <td><a class="sender" href="#" data-toggle="modal" data-target="#myModal"><%=itr.next()%></a></td>
                                         <td><%=itr.next()%></td>
                                     </tr>
                                 <%}%>
@@ -81,7 +81,7 @@
                   <h4 id="label"></h4>
               </div>
               <div class="modal-footer">
-                <button id="myClose" type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+                <button type="button" class="btn btn-default closer" data-dismiss="modal" >Close</button>
               </div>
             </div>
           </div>
@@ -91,13 +91,11 @@
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
         <script>
-            $('#alert').on('click', function(event) {
-                //alert("ok");
+            $('.sender').on('click', function(event) {
+                var loc = window.location.host + window.location.pathname;
                 $("#label").html("Sending email...");
-                $.get( "http://localhost:8080/WebApplication1/myserv?action=mail",function(data) {
-                    //alert("Data Loaded: " + data);
+                $.get( "http://"+loc+"?action=mail",function(data) {
                     var obj = jQuery.parseJSON(data);
-                    //text
                     if (obj.status === 'OK') {
                         $( "#prog" ).removeClass( "progress-bar progress-bar-striped active" ).addClass( "progress-bar progress-bar-success" );
                         $("#label").html(obj.text);
@@ -106,14 +104,10 @@
                         $("#label").html(obj.text);
                     }
                 });
+            });                      
+            $('.closer').on('click', function(event) {
+                $( "#prog" ).removeClass("progress-bar progress-bar-success").addClass("progress-bar progress-bar-striped active");
             });
-            
-//            $('#myClose').on('click', function(event) {
-// 
-//                        $( "#prog" ).removeClass("progress-bar progress-bar-success").addClass("progress-bar progress-bar-striped active");
-//                        $("#label").html("Sending email...");
-//                });
-//            });
         </script>
     </body>
 </html>

@@ -36,11 +36,13 @@ public class myserv extends HttpServlet {
      */
     protected List dataList = new ArrayList();
     protected String emailto;
+    protected String emailfrom;
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext context = getServletContext();
-       // emailto = context.getInitParameter("email");
+        emailto = context.getInitParameter("emailto");
+        emailfrom = context.getInitParameter("emailfrom");
         
         dataList.add("1");
         dataList.add("Один");
@@ -67,13 +69,13 @@ public class myserv extends HttpServlet {
                     email.setSmtpPort(465);
                     email.setAuthenticator(new DefaultAuthenticator("LLITakeTitan", "nezhin"));
                     email.setSSLOnConnect(true);
-                    email.setFrom("LLITakeTitan@yandex.ru");
+                    email.setFrom(emailfrom); //do not change
                     email.setSubject("TestMail");
                     email.setMsg("This is a test mail ... :-)");
-                    email.addTo("shtaket01@mail.ru");
+                    email.addTo(emailto);
                     email.send();
                     
-                    out.println("{\"status\":\"OK\",\"text\":\"Email has been sent\"}");
+                    out.println("{\"status\":\"OK\",\"text\":\"Email has been sent to "+emailto+"\"}");
                 } catch (Exception e) {
                     out.println("{\"status\":\"BAD\",\"text\":\""+e.getMessage()+"\"}");
                 }
