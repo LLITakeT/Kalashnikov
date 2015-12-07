@@ -60,9 +60,13 @@ public class myserv extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("data", dataList);
-        if (request.getParameter("action").equals("mail")) {
+        String action = request.getParameter("action");
+        
+        if (action == null) {
+            response.setContentType("text/html;charset=UTF-8");
+            request.getRequestDispatcher("welcome.jsp").forward(request, response);
+        } else if (action.equals("mail")) {
             try (PrintWriter out = response.getWriter()) {
-                //Handle exception
                 try {
                     Email email = new SimpleEmail();
                     email.setHostName("smtp.yandex.ru");
@@ -79,11 +83,7 @@ public class myserv extends HttpServlet {
                 } catch (Exception e) {
                     out.println("{\"status\":\"BAD\",\"text\":\""+e.getMessage()+"\"}");
                 }
-                
             }
-        } else {
-            response.setContentType("text/html;charset=UTF-8");
-            request.getRequestDispatcher("welcome.jsp").forward(request, response);   
         }
     }
             
